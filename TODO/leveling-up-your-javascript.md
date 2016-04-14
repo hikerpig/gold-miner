@@ -58,37 +58,39 @@ Once you’ve gotten off the HTML page (doesn’t that feel cleaner?), the next 
 
 ![](http://ww4.sinaimg.cn/large/9b5c8bd8jw1f0zumg7z7gj20kp05ojru.jpg)
 
-Wrapper for the module pattern.
+模块模式的包装。
 
-So, am I the only one who sees that and gets confused by all the parentheses? Mentally it was difficult to wrap my head around what this was doing – and I know JavaScript. It helped me to look at it from the inside out.
+只有我一个人被这些括号搞晕了么？我的脑子搞不明白这里是干嘛的，这还是在我懂JavaScript 的前提下。其实这里如果从里往外看，就清晰很多。
 
 ![](http://ww2.sinaimg.cn/large/9b5c8bd8jw1f0zuncbxnuj20m805lgly.jpg)
 
-The inside of the module pattern is just a regular function.
+模块的内部只是个普通的函数。
+
+从一个简单的函数开始，在里面你需要定义你的模块的实际功能代码。
 
 You begin with a simple function. This is where you will define the methods you can call on your module.
 
 ![](http://ww1.sinaimg.cn/large/9b5c8bd8jw1f0zunvmhafj20m805ot94.jpg)
 
-The parenthesis will automatically run the function.
+圆括号使得这个函数自动运行。
 
-The parenthesis at the end there will then automatically run the function. Whatever we return is the module, which, for now, we’re keeping empty. What you see highlighted now is _not_ valid JavaScript however. So what makes it valid?
+最后的圆括号会让该函数立即执行。我们在函数里返回了什么，模块就是什么。此时我们这里还是空的。不过此时上图高亮的部分还_不是_合法的JavaScript。那么，怎样让它变得合法呢？
 
 ![](http://ww4.sinaimg.cn/large/9b5c8bd8jw1f0zuoenvzjj20m805mdg9.jpg)
 
-The outer parenthesis makes this crazy stuff work.
+外边的圆括号开始发功了。
 
-The parenthesis around the `function() { }()` block is what makes this whole thing valid JavaScript. If you don’t believe me, you can open up your developer tools console and try entering that yourself.
+在`function() { }()` 外的圆括号使得此处成为合法JavaScript。你要是不信我，就打开开发者工具的控制台自己输入看看。
 
-Which brings up back to the beginning…
+这样就是我们一开始看到的。
 
 ![](http://ww1.sinaimg.cn/large/9b5c8bd8jw1f0zuotyvzej20m808ngm7.jpg)
 
-The result is assigned to a variable.
+返回值被赋给一个变量。
 
-The very last thing that happens is the result is assigned to a variable. Even with me personally understanding of all this, every time I see this in code I have to mentally pause for a second and remind myself of just what in the heck is going on here. I’m not ashamed to say it – I keep this code handy in my editor so I can copy and paste the ’empty’ Module for quick reuse.
+最后一件事是把返回值赋给一个变量。尽管我自己完全懂得这里，但每次我看见这种代码我都得暂停一秒钟来提醒自己这是什么鬼。说来也不怕羞，我在编辑器里存着这段空模块代码随时快手粘贴。
 
-Now that we’ve gotten over the hump of that slightly weird syntax, what does an actual Module pattern look like?
+当我们终于征服了这坨诡异的语法之后，究竟真正的模块模式看起来是怎样的？
 
     var counterModule = (function() {
     	var counter = 0;
@@ -105,7 +107,7 @@ Now that we’ve gotten over the hump of that slightly weird syntax, what does a
 
     }());
 
-The previous code creates a module called `counterModule`. It has two functions: `incrementCounter` and `resetCounter`. Using them could look something like this:
+这段代码创建了一个叫做`counterModule` 的模块。它有两个函数，`incrementCounter` 和 `resetCounter`。可以这样使用它们：
 
     console.log(counterModule.getCounter()); //0
     counterModule.incrementCounter();
@@ -113,7 +115,7 @@ The previous code creates a module called `counterModule`. It has two functions:
     counterModule.resetCounter();
     console.log(counterModule.getCounter()); //0
 
-The idea is that all of the code behind my `counterModule` is packaged away nicely. Packaging is computer science 101, and the future of JavaScript will provide even simpler ways of doing this, but for now, I find the Module pattern to an incredibly simple, practical way of handling the issue of organization.
+主要的思想就是把`counterModule` 里的代码好好地封装起来。封装是计算机科学基础概念，将来JavaScript 还会提供更简单的封装方法，不过就现在来说，我觉得模块模式已是个超级简单和使用的组织代码方案。
 
 #### A Practical Module Sample
 
