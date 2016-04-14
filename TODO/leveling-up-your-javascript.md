@@ -1,53 +1,60 @@
 * 原文链接 : [Leveling Up Your JavaScript](http://developer.telerik.com/featured/leveling-up-your-javascript/)
 * 原文作者 : [Raymond Camden](http://developer.telerik.com/author/rcamden/)
 * 译文出自 : [掘金翻译计划](https://github.com/xitu/gold-miner)
-* 译者 : 
+* 译者 : [Hikerpig](https://github.com/hikerpig)
 * 校对者:
-* 状态 : 待认领
 
 
-JavaScript is one of those languages that can be easy to pick up, it can be infinitely more difficult to master. However, a lot of articles seem to assume that you are already a master.
+JavaScript 是一门入门容易，但是相当难以精通的语言。可现今一些文章总假设你已经精通了这门语言。
 
-I’ve been using JavaScript since its introduction as LiveScript in 1995, but slowly moved away from client-side development to retreat into the safe confines of the server. For the past five years, I’ve refocused on the client-side. I’m happy to find that browsers are far more competent, powerful, and easier to debug than they were in the early days. But JavaScript has grown in complexity and is not any easier to master. Recently I came to a conclusion. I don’t necessarily need to _master_ JavaScript – but I can get better. I am happy being a “good” JavaScript developer.
+我从1995年JavaScript 还以LiveScript 名字出现的时候就开始用它了，但后来逐渐从前端开发撤回服务器的安全怀抱中，直到五年前才重拾。很高兴看到如今的浏览器更加的强大和易于调试。但JavaScript 已经演变得越来越复杂。不过最近我终于得出结论，我并不需要_精通_Javascript，只需要比以前更进一步就好。能成为一个"好"的JavaScript 开发者我便觉欣慰。
 
 What follows are the tips and techniques that I have found to be useful and – most of all – _practical_ in terms of writing JavaScript: [organizing code](http://developer.telerik.com/featured/leveling-up-your-javascript/#organization); [linting](http://developer.telerik.com/featured/leveling-up-your-javascript/#linting); [testing](http://developer.telerik.com/featured/leveling-up-your-javascript/#testing); and [using browser developer tools](http://developer.telerik.com/featured/leveling-up-your-javascript/#devtools). While some of these may seem obvious to experienced JavaScript developers, it’s very easy to fall into bad habits when you are new to a language. These guidelines have helped me level up my skills and produce better experiences for my users. And _that’s_ our number one goal, right?
 
-> You can download the source code for the examples in this [article here](http://developer.telerik.com/wp-content/uploads/2016/01/code.zip).
+以下是我发现的一些_实用_的JavaScript 小技巧: [组织代码](http://developer.telerik.com/featured/leveling-up-your-javascript/#organization); [代码风格检验](http://developer.telerik.com/featured/leveling-up-your-javascript/#linting); [测试](http://developer.telerik.com/featured/leveling-up-your-javascript/#testing); 以及 [使用开发者工具](http://developer.telerik.com/featured/leveling-up-your-javascript/#devtools)。
 
-## Organization
+> 你可在此处[下载](http://developer.telerik.com/wp-content/uploads/2016/01/code.zip)本文的样例代码。
+
+## 组织代码
 
 As a new JavaScript developer begins learning their craft, they will inevitably begin with a large block of code on top of their HTML page. It always starts simple. A simple bit of jQuery to autofocus a form field. Then maybe form validation. Then a little dialog widget that marketing just loves – you know, the ones that stop people from reading content so that they can Facebook Like the site itself. After a few iterations of this you’ve got a few hundred lines of JavaScript within an HTML file that probably has a few hundred lines of tags.
 
+JavaScript 初学者总是不可避免地在他们的HTML 页面里写上一大坨代码。开始的时候都是很简单的，例如使用jQuery 给一个表单输入自动加上焦点，然后要加上表单验证，然后又要加上一些市场上走俏的模态框组件-就是那些阻止用户往下阅读内容好让他们在Facebook 上给网站点赞的东西。经过这些七七八八的功能迭代后你的一个文件里HTML 标签和JavaScript 都有了几百行。
+
 It’s a mess. Stop doing it. It sounds simple, and I’m almost embarrassed to even write it down as a tip, but it is _very_ tempting to just whip up a quick script block on top of your page. Avoid that temptation like the plague please. Make it a habit when you create a new web site to go ahead and create an empty JavaScript file. Include it via the script tag and it will be ready for you when you begin adding interactivity and other client-side features.
+
+别再继续这种乱七八糟的方式了。这个技巧太简单了我都不好意思单独把它列出来，但大家还_真的_很难拒绝这种把代码一坨扔上页面的偷懒做法。但请各位务必避之如瘟疫。新写网站时，请新建JavaScript 文件书写交互以及各种客户端功能的代码，然后用script 标签加载它，请养成这个好习惯。
 
 Once you’ve gotten off the HTML page (doesn’t that feel cleaner?), the next problem you’ll run into is organization of the code itself. Those few hundred lines of JavaScript may work just fine, but the first time you have to debug or modify the code after a few months away you may find yourself wondering just where in the heck a particular function exists.
 
-So if simply moving a bunch of code off HTML into another file isn’t enough, what’s the next solution?
+把JavaScript 从HTML 页面中剥离以后（干净多了是不是？），下一个问题就是关于这些代码的组织形式了。这几百行JavaScript 也许功能没啥问题，但是几个月后，一旦你开始想调试或是改点东西，你可能特么找不到某个函数在哪了。
 
-### Frameworks!
+若仅仅从HTML 中剥离出来是不够的，那么下一个解决方案是什么呢？
 
-Obviously a framework is the solution. Move everything to AngularJS. Or Ember. Or React. Or one of the hundred or so other options. Rebuild the entire site into a Single Page Application and MVC and just go crazy.
+### 框架！
 
-Or maybe not. Don’t get me wrong, I love Angular when I’m building apps, but there’s a difference between an “app” and a web page with interactivity. There’s a difference between a fancy Ajax-enhanced product catalog and Gmail – at least a few hundred thousand lines of code different. But if you aren’t going to go the framework route, what’s the other choice?
+显然解决方案是框架。把所有东西用AngularJS，或Ember，或React 或其他几百个框架中某一个写一遍。哼哧哼哧地把整个网站重写为一个单页应用，用上MVC 什么的。
 
-### Design Patterns
+或者根本不需要。当然了，别误会我，在编写应用的时候我喜欢用Angular，但是一个"应用"和一个页面的交互复杂度是有区别的。一个用上Ajax 技术的产品目录页和Gmail 也是有区别的 - 起码几十万行代码的区别。那么，如果不走框架这条路的话，还有什么选择呢？
 
-Design patterns are a fancy way of saying, “here is an approach to handle a problem that people have had in the past.” They can definitely be useful. Addy Osmani wrote an excellent book on the topic, [Learning JavaScript Design Patterns](http://addyosmani.com/resources/essentialjsdesignpatterns/book/), that you can download and read for free. I recommend it. But an issue I had with the book (and similar discussions on the topic), was that you end up looking at code like this.
+### 设计模式
+
+设计模式是对"这是过去人们解决问题的一个方法"这句话的高级说法。Addy Osmani 写过一本关于此的很好的书，[学习JavaScript 设计模式](http://addyosmani.com/resources/essentialjsdesignpatterns/book/)，可以免费下载阅读。我推荐这本书。但是我对它（以及类似的关于此议题的讨论）有点小看法，因为最后你们写的代码可能变成这样:
 
     var c = new Car();
     c.startEngine();
     c.drive();
     c.soNotRealistic();
 
-Abstractly, design patterns made sense to me, but _practically_, they did not. It was difficult to take the patterns and apply them in context to a real web page with real code.
+对我来说，设计模式在抽象层面上是有意义的，但是在_实际工作中_，没有什么用。从实际项目中的网页和代码里提取模式，是件很难的事情。
 
-#### Modules
+#### 模块
 
-Among all the patterns I read about, I felt like the Module pattern was both the simplest and easiest to apply to existing code.
+在所有我看过的设计模式中，我觉得模块模式是最简单也是最容易应用到现有代码里的。
 
-At a high level, the Module Pattern simply creates a package around a set of code. You can take a related collection of functions, drop them into a module, and then explicitly decide what you want to expose. This creates a “black box” of code that can more easily be shared amongst other projects. You can also move code in modules into separate files.
+纵而览之，模块模式就是一群代码之外加了个包装。你把抽出一群功能相关的代码扔到一个模块里，决定需要暴露的部分，也可以把一个模块里的代码放到不同的文件里。然后建立一个易于在项目之间共享的代码黑匣。
 
-Let’s look at a simple example of the Module Pattern. It has a syntax that may seem weird at first. It certainly did to me. Let’s begin with the “wrapper” and I’ll explain the various bits.
+看看这个简单的例子。此处的语法咋看可能有点奇怪，起码我一开始是这样觉得的。我们先从"包装"部分开始看，然后我再解释其余部分。
 
 ![](http://ww4.sinaimg.cn/large/9b5c8bd8jw1f0zumg7z7gj20kp05ojru.jpg)
 
@@ -101,7 +108,7 @@ Now that we’ve gotten over the hump of that slightly weird syntax, what does a
 The previous code creates a module called `counterModule`. It has two functions: `incrementCounter` and `resetCounter`. Using them could look something like this:
 
     console.log(counterModule.getCounter()); //0
-    counterModule.incrementCounter(); 
+    counterModule.incrementCounter();
     console.log(counterModule.getCounter()); //1
     counterModule.resetCounter();
     console.log(counterModule.getCounter()); //0
@@ -142,7 +149,7 @@ You can see the form I mentioned as well as a submit button. I’d also include 
 
     var badWords = ["kitten","puppy","beer"];
     function hasBadWords(s) {
-    	for(var i=0;i<badwords.length; i++)="" {="" if(s.indexof(badwords[i])="">= 0) return true;	
+    	for(var i=0;i<badwords.length; i++)="" {="" if(s.indexof(badwords[i])="">= 0) return true;
     	}
     	return false;
     }
@@ -169,7 +176,7 @@ You can see the form I mentioned as well as a submit button. I’d also include 
     		return true;
     	} else { console.log('false');
     		e.preventDefault();
-    		return false;	
+    		return false;
     	}
     });</badwords.length;>
 
@@ -182,7 +189,7 @@ First, I created a new file called game.js and included it via a script tag in m
     	var badWords = ["kitten","puppy","beer"];
 
     	function hasBadWords(s) {
-    		for(var i=0;i<badwords.length; i++)="" {="" if(s.indexof(badwords[i])="">= 0) return true;	
+    		for(var i=0;i<badwords.length; i++)="" {="" if(s.indexof(badwords[i])="">= 0) return true;
     		}
     		return false;
     	}
@@ -202,7 +209,7 @@ First, I created a new file called game.js and included it via a script tag in m
     	}
 
     	return {
-    		valid:validIdentifier	
+    		valid:validIdentifier
     	}
 
     }());</badwords.length;>
@@ -217,7 +224,7 @@ This isn’t terribly different from before, but now it’s packaged into a vari
     		return true;
     	} else { console.log('false');
     		e.preventDefault();
-    		return false;	
+    		return false;
     	}
     });
 
@@ -394,7 +401,7 @@ Woot! Almost done. This final issue is a perfect example of where JSHint can pro
         	console.log(badForm);
     		if(badForm) alert('Bad Form!');
     		else {
-    			//do something on good 
+    			//do something on good
     		}
     	});
     });
@@ -462,7 +469,7 @@ For our sample code with a bug we’ll use a little function that I wrote that t
     	}
 
     	return {
-    		fnum:fnum	
+    		fnum:fnum
     	}
 
     }());
