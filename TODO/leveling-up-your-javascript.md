@@ -431,11 +431,9 @@ xunit 创建的测试。
 
 你也许听过TDD(测试驱动开发)。说的是在写具体代码之前先把单元测试写好。本质上是测试主导你的开发。写下代码并看它通过测试的时候，你将欣慰自己没走错路。
 
-You’ll probably have heard of TDD (Test Driven Development). This is the concept of writing unit tests before any actual functionality. Essentially, the idea is that your tests help drive your development. As you write your code and see your tests begin to pass, you have some assurance that your on the right path.
+我觉得这个想法不错，不过让所有人都这么做的确是有点困难。我们干脆先从简单点的开始。想象下你手上有一些据你所知功能正常的代码，然后你发现了个bug。在修复它之前，你可以创建一个测试去检验出此bug，修复bug，然后跑跑测试，确保此后_一直_不会再出相同bug。如我所言，这不是最理想的实践，但也能算是朝着以后在开发所有阶段实践测试的一个过渡。
 
-I think that’s a noble idea, but it may be difficult to achieve for everyone. How about starting simpler? Imagine you’ve got a set of existing code that – as far as you know – works just fine. Then you discover a bug. Before fixing the bug, you can create a test to verify the bug, fix it, then use the test to ensure it _stays_ fixed as you work on it in the future. As I said, this isn’t the ideal path, but can be a way to gently ramp up into including testing in all stages of your development.
-
-For our sample code with a bug we’ll use a little function that I wrote that tries to shorten numbers. So for example, 109203 could be simplified as 109K. An even bigger number like 2190290 could be turned into 2M. Let’s look at the code and then I’ll demonstrate the bug.
+我用我写的一个精简数字显示的函数作为bug 的例子。109203可以精简为109K。更大的例如2190290这样的数可精简为2M。看下代码然后我会说说bug。
 
     var formatterModule = (function() {
 
@@ -470,9 +468,9 @@ For our sample code with a bug we’ll use a little function that I wrote that t
 
     }());
 
-Maybe you see the issue right away? Give up? When given 9999 as an input, it returns 10K. Now, that might be a useful shortening, but the code is supposed to treat all numbers below 10K as their original value. It is an easy enough correction, but let’s use this as an opportunity to add a test. For our testing framework we’ll use [Jasmine](http://jasmine.github.io/). Jasmine has a great, easy to understand language for writing tests and a simple way to run them. The quickest way to get started is to download the library. Once you’ve done that and extracted it, you’ll find a file called SpecRunner.html. This file handles loading your code, loading a test, and then running the tests and creating a pretty report. It requires the lib folder from the zip but you can begin by copying both SpecRunner and the lib to someplace on your web server.
+你马上看出问题了？还是放弃了？当输入9999的时候，会返回10K。尽管此精简可能有用，但代码对于所有小于10K的数字应该一视同仁，都返回它们的原始值。这个修正很简单，我们正好当作添加测试的机会。关于测试框架我选择[Jasmine](http://jasmine.github.io/)。Jasmine 的测试易于编写和运行。最快的使用方法是下载这个库。解压后你会发现SpecRunner.html 文件。此文件负责引入我们的代码，引入测试，而后运行测试和生成漂亮的报告。它依赖于压缩包中的lib 文件夹，你一开始可以把SpecRunner 和lib 文件夹一起复制到你的服务器某处。
 
-Open up SpecRunner.html and on top you’ll see:
+打开SpecRunner.html 你会看到。
 
     <!-- include source files here... -->
     script tags here...
@@ -480,7 +478,7 @@ Open up SpecRunner.html and on top you’ll see:
     <!-- include spec files here... -->
     more script tags here...
 
-Under the first comment you’ll want to remove the existing line and simply add a script tag pointing to the code containing your code. If you’ve got the zip file for this article you can see my code in demo4 in a file called formatter.js. Next you’ll want to add a script tag pointing to the spec, or test. Maybe you haven’t seen Jasmine before, but take a look at the spec. It is _very_ readable, even to the untrained eye.
+在第一个注释下你需要删除已有的代码然后加上一个script 标签引入你的代码。如果下载了此文的代码，你可以在demo4 文件夹里找到formatter.js 文件。之后你要加一个script 标签引入测试代码。你可能之前没见过Jasmine，但你看看这个测试代码，_非常_易读，新手也能懂。
 
     describe("It can format numbers nicely", function() {
 
@@ -490,29 +488,31 @@ Under the first comment you’ll want to remove the existing line and simply add
 
     });
 
-Basically my test is saying that when 9999 is passed to the library it should get 9999 out again. If you open the SpecRunner.html in your browser you can see it reporting the failure.
+我的测试说的是当9999作为输入时应该返回9999。在浏览器里打开SpecRunner.html 你就能看到错误报告。
 
 ![](http://ww4.sinaimg.cn/large/9b5c8bd8jw1f0zuu5bbhaj20m80e1q61.jpg)
 
-Report of the failing test.
+测试失败的报告。
 
-The fix, is rather simple. Change that conditional using 9999 to 10000:
+修复起来很简单。把条件里的数字从9999增到10000:
 
     if(x < 10000) {
     	return x;
     }
 
-Now when you run the tests you’ll see a much happier picture:
+不论何时再跑测试你能看到一片欢乐。
 
 ![](http://ww2.sinaimg.cn/large/9b5c8bd8jw1f0zuuh4xj8j20m804y74k.jpg)
 
-Report of the passing test.
+测试成功的报告。
 
-Looking at the module, you can probably think of a number of related tests that would really flesh out the suite. In general, there’s nothing wrong with going overboard on your testing and trying to cover every possible use of your code possible. Consider the awesome date/time library [Moment.js](http://momentjs.com/). It has – I kid you not – over fifty-seven thousand tests. That’s thousand. You read it right.
+你估计能想出一些相关测试完善这套测试。通常来说，积极地添加测试以覆盖你代码的各种可能使用场景没有任何不妥。关于日期和时间的牛库[Moment.js](http://momentjs.com/)，不是我骗你，有超过五万七千多个测试。你真没看错，就是几万个。
 
-Other options for testing JavaScript code include [QUnit](https://qunitjs.com/) and [Mocha](http://mochajs.org/). As with linting you can automate testing with tasks runners like Grunt, and you can even go full stack and test the browser itself with [Selenium](http://www.seleniumhq.org/).
+JavaScript 测试框架的其他选择有[QUnit](https://qunitjs.com/)和[Mocha](http://mochajs.org/)。和代码检验一样，你能使用Grunt 之类的工具自动化测试，甚至可以往全栈靠一点，使用[Selenium](http://www.seleniumhq.org/) 测试浏览器。
 
-## Browser Developer Tools
+## 浏览器开发工具
+
+我提到的最后一个工具在浏览器里 - 开发者工具。
 
 The final tool I’ll mention are those within the browser itself – the dev tools. You can find multiple articles, presentations, and videos on this topic so I won’t say much more about it, outside of my belief that, amongst everything I’ve discussed today, this is probably the one thing I’d call **required knowledge** for web developers. It is perfectly fine to write broken code. And it is perfectly fine to not know everything. But browser dev tools at least help you _find_ the broken bits. At that point a solution is typically one Google search away.
 
